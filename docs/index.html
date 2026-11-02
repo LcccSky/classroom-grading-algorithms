@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Classroom Grading Algorithms — Open-Source Assessment Math & Benchmarks</title>
+  <meta name="description" content="Open-source mathematical specification and interactive benchmarks for Dinkelbach 0-1 drop-lowest optimization, 10√x & Z-Score exam curving, Standards-Fair 4-point rubrics, and exact EZ quiz charts.">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --card: #ffffff;
+      --ink: #1f2421;
+      --muted: #5a625d;
+      --accent: #b83a2d;
+      --pine: #235347;
+      --border: #e2dcd0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 40px 20px 64px; }
+    header { border-bottom: 2px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+    .badge {
+      display: inline-block; background: #efe9dc; color: var(--pine);
+      font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    h1 { font-size: 2.1rem; line-height: 1.2; margin: 12px 0; }
+    h2 { font-size: 1.38rem; margin-top: 32px; color: var(--pine); }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+    }
+    pre {
+      background: #1e2220; color: #f4f1ea; padding: 16px; border-radius: 10px; overflow-x: auto;
+    }
+    a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: var(--pine); }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; }
+    th { background: #f3eee3; }
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      display: inline-block; padding: 7px 13px; border: 1px solid var(--border);
+      border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); font-size: 0.88rem;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent); }
+    .demo-box { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+    @media (max-width: 640px) { .demo-box { grid-template-columns: 1fr; } }
+    input, select {
+      width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;
+    }
+    footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge">MIT Open-Source EdTech Math Specification</span>
+      <h1>Classroom Grading Algorithms &amp; Numerical Verification Suite</h1>
+      <p>A lightweight, zero-dependency JavaScript reference library solving four real-world numerical bugs in K–12 and university gradebooks: <strong>0–1 fractional drop-lowest optimization</strong>, <strong>IEEE-754 decimal cutoff rounding</strong>, <strong>outlier-resistant exam curving</strong>, and <strong>standards-fair 4-level rubric scaling</strong>.</p>
+      <p>Production classroom web suite: <a href="https://gradingpad.com/">GradingPad — Free Online Grading Calculator</a> · Source repository: <a href="https://github.com/LcccSky/classroom-grading-algorithms">GitHub (LcccSky/classroom-grading-algorithms)</a></p>
+    </header>
+
+    <section class="card">
+      <h2 style="margin-top:0;">1. Interactive Dinkelbach Fractional "Drop Lowest Quiz" Benchmark</h2>
+      <p>When syllabus assessments have unequal point denominators (e.g., 10-point pop quizzes mixed with 100-point chapter tests), dropping the item with the lowest percentage often <em>lowers</em> a student's course average. Dinkelbach's iterative fractional solver maximizes <code>(Σ earned_i) / (Σ max_i)</code> directly:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Sample Assessment Set</th>
+            <th>Naive Lowest-% Drop</th>
+            <th>Optimal Fractional Drop</th>
+            <th>Net Student Gain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>7/10, 76/100, 18/20, 85/100, 9/10</code></td>
+            <td>Drops <code>7/10 (70%)</code> → 81.7% (B-)</td>
+            <td>Drops <code>76/100 (76%)</code> → <strong>85.0% (B)</strong></td>
+            <td><strong>+3.3% (B- → B)</strong></td>
+          </tr>
+          <tr>
+            <td><code>6/10, 68/100, 19/20, 92/100</code></td>
+            <td>Drops <code>6/10 (60%)</code> → 79.1% (C+)</td>
+            <td>Drops <code>68/100 (68%)</code> → <strong>85.4% (B)</strong></td>
+            <td><strong>+6.3% (C+ → B)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;">Run this solver on your own syllabus points in the <a href="https://gradingpad.com/test-grade-calculator">Test Grade Calculator &amp; Optimal Drop-Lowest Solver</a>.</p>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0;">2. Six Statistical Exam Curving Formulas &amp; Inverse Cutoffs</h2>
+      <p>University STEM exams frequently require post-exam curving. When an instructor applies a Square-Root curve (<code>f(x) = 10√x</code>) to a 75-point midterm, writing raw point cutoffs on the whiteboard requires the exact monotonic inverse <code>g⁻¹(T) = T² / 100</code> (so an A- at 90% requires <strong>60.8 / 75 pts</strong> rather than 67.5 pts).</p>
+      <div class="demo-box">
+        <div>
+          <label for="demoRaw"><strong>Try Live Square-Root &amp; Inverse Cutoff (Raw %):</strong></label>
+          <input id="demoRaw" type="number" min="0" max="100" step="0.5" value="64">
+        </div>
+        <div id="demoOut" style="padding:10px 14px;background:#f3eee3;border-radius:8px;font-weight:600;">
+          Raw 64.0% → 10√x Curved: 80.0% (B-) · 90% A- Cutoff needs 81.0% raw
+        </div>
+      </div>
+      <p style="margin-top:12px;">Compare Square-Root, True Z-Score (<code>μ, σ</code>), 2-Point Linear Anchor, Bell Mean-Shift, and Tukey <code>1.5×IQR</code> outlier trimming in the <a href="https://gradingpad.com/grading-curve-calculator">Statistical Grading Curve Calculator</a>, or check finals week targets with <code>89.5% → 90%</code> syllabus rounding in the <a href="https://gradingpad.com/final-grade-calculator">Final Grade Calculator</a>.</p>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0;">3. Solving 4-Level Analytic Rubric Compression (3/4 = 75% vs. 85% B)</h2>
+      <p>Standard proportional 4-point rubrics assign <code>3 ÷ 4 = 75% (C)</code> to students who score <em>Proficient</em> across every row. Switching to a piecewise standards-aligned mapping aligns Proficient performance with a solid B (<code>85.0%</code>) while preserving 50%–60% minimum floors:</p>
+      <ul>
+        <li><strong>Interactive 4-Level Matrix &amp; LMS Feedback Slip Generator:</strong> <a href="https://gradingpad.com/rubric-grader">Online Rubric Grader</a></li>
+        <li><strong>10-Point vs. Strict 7-Point &amp; 4.0 / 5.0 AP GPA Reference:</strong> <a href="https://gradingpad.com/grading-scale-chart">US Grading Scale Chart</a></li>
+        <li><strong>CSPRNG + DSATUR Conflict-Free Classroom Team Builder:</strong> <a href="https://gradingpad.com/random-group-generator">Random Group Generator</a></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0;">4. Pre-Computed Quiz Length Reference Scales (Whole &amp; 0.5 Half-Points)</h2>
+      <p>Teachers marking fixed-length weekly quizzes can open our digital <a href="https://gradingpad.com/easy-grader">Easy Grader (EZ Slide Chart)</a>, batch-score whole class stacks in the <a href="https://gradingpad.com/online-grader-calculator">Online Grader Calculator</a>, embed a <a href="https://gradingpad.com/widgets">Free Teacher Grader Widget</a> on Canvas or Google Sites, or jump directly to exact fractional lookup tables:</p>
+      <div class="pill-grid">
+        <a class="pill" href="https://gradingpad.com/15-question-grade-scale">15 Question Grade Scale (6.67%/item)</a>
+        <a class="pill" href="https://gradingpad.com/20-question-grade-scale">20 Question Grade Scale (5.00%/item)</a>
+        <a class="pill" href="https://gradingpad.com/25-question-grade-scale">25 Question Grade Scale (4.00%/item)</a>
+        <a class="pill" href="https://gradingpad.com/30-question-grade-scale">30 Question Grade Scale (3.33%/item)</a>
+        <a class="pill" href="https://gradingpad.com/40-question-grade-scale">40 Question Grade Scale (2.50%/item)</a>
+        <a class="pill" href="https://gradingpad.com/50-question-grade-scale">50 Question Grade Scale (2.00%/item)</a>
+      </div>
+    </section>
+
+    <footer>
+      Published under the MIT License · Maintained by the <a href="https://gradingpad.com/about">GradingPad Curriculum &amp; Math Team</a> · 100% Client-Side FERPA-Safe Architecture.
+    </footer>
+  </div>
+  <script>
+    const inp = document.getElementById("demoRaw");
+    const out = document.getElementById("demoOut");
+    inp.addEventListener("input", function () {
+      const r = Math.max(0, Math.min(100, parseFloat(inp.value) || 0));
+      const c = r > 0 ? Math.min(100, 10 * Math.sqrt(r)) : 0;
+      const letter = c >= 93 ? "A" : c >= 90 ? "A-" : c >= 87 ? "B+" : c >= 83 ? "B" : c >= 80 ? "B-" : c >= 70 ? "C" : c >= 60 ? "D" : "F";
+      out.textContent = "Raw " + r.toFixed(1) + "% → 10√x Curved: " + c.toFixed(1) + "% (" + letter + ") · 90% A- Cutoff needs 81.0% raw";
+    });
+  </script>
+</body>
+</html>
