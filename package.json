@@ -1,0 +1,22 @@
+{
+  "name": "classroom-grading-algorithms",
+  "version": "1.2.0",
+  "description": "Zero-dependency classroom grading math: Dinkelbach 0-1 fractional drop-lowest solver, 6-model statistical curving, Standards-Fair 4-level rubrics, and IEEE-754 exact rounding.",
+  "type": "module",
+  "main": "src/grading-algorithms.js",
+  "homepage": "https://gradingpad.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LcccSky/classroom-grading-algorithms.git"
+  },
+  "keywords": [
+    "grading-calculator",
+    "easy-grader",
+    "exam-curve",
+    "rubric-grader",
+    "final-grade-calculator",
+    "dinkelbach",
+    "edtech"
+  ],
+  "license": "MIT"
+}
